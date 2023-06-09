@@ -332,25 +332,27 @@ You need to add the following to your `Info.plist` file of the main runner targe
 
 ## Changer l'icone de l'app
 
-Ajouter a la suite des dependences dans le `pubspec.yaml`:
+1. Créer un dossier `images` dans un dossier `assets` à la racine du projet dans lequel on met l'icone
+
+2. Ajouter a la suite des dependences dans le `pubspec.yaml`:
 
 ```yaml=
   flutter_launcher_icons: ^0.13.1
 
 flutter_icons:
-  image_path: "assets/images/open.png" 
+  image_path: "assets/images/MON_ICONE.png" 
   android: true
   ios: true
 ```
 
-Décommenter l'ajout d'assets pour définir l'icone dans le `pubspec.yaml`:
+3. Décommenter l'ajout d'assets pour définir l'icone dans le `pubspec.yaml`:
 ```yaml=
 # To add assets to your application, add an assets section, like this:
 assets:
-- assets/images/open.png
+- assets/images/MON_ICONE.png
 ```
 
-Puis lancer
+4. Lancer
 
 ```shell=
 flutter pub get
