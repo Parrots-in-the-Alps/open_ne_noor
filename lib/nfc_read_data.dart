@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_nfc_sample/nfc_helpers/ndef_records.dart';
-import 'package:flutter_nfc_sample/nfc_helpers/nfc_form_row.dart';
 import 'package:flutter_nfc_sample/nfc_helpers/nfc_wrapper_view.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'dart:convert';
 
 class NfcReadData extends StatefulWidget {
   NfcReadData({Key? key}) : super(key: key);
@@ -64,37 +63,19 @@ class _NfcReadDataState extends State<NfcReadData> {
 
     var tech = Ndef.from(tag);
     if (tech is Ndef) {
-      final cachedMessage = tech.cachedMessage;
-      final canMakeReadOnly = tech.additionalData['canMakeReadOnly'] as bool?;
-      final type = tech.additionalData['type'] as String?;
-      if (type != null) {
+      final record = tech.cachedMessage!.records[0];
+      if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown &&
+          record.type.length == 1 &&
+          record.type.first == 0x54) {
+        // record type: NFC Wellknown Text
+        final languageCodeLength = record.payload.first;
+        final text =
+            utf8.decode(record.payload.sublist(1 + languageCodeLength));
         ndefWidgets.add(ListTile(
-            title: const Text('HOHOHO'), subtitle: Text(getNdefType(type))));
+          title: Text(text),
+        ));
       }
 
-      ndefWidgets.add(ListTile(
-          title: const Text('Size'),
-          subtitle: Text(
-              '${cachedMessage?.byteLength ?? 0} / ${tech.maxSize} bytes')));
-
-      ndefWidgets.add(ListTile(
-          title: Text('Writable'), subtitle: Text('${tech.isWritable}')));
-
-      if (canMakeReadOnly != null) {
-        ndefWidgets.add(ListTile(
-            title: const Text('Can Make Read Only'),
-            subtitle: Text('$canMakeReadOnly')));
-      }
-
-      if (cachedMessage != null) {
-        Iterable.generate(cachedMessage.records.length).forEach((i) {
-          final record = cachedMessage.records[i];
-          final info = NdefRecordInfo.fromNdef(record);
-          ndefWidgets.add(ListTile(
-              title: Text('#$i ${info.title}'),
-              subtitle: Text('${info.subtitle}')));
-        });
-      }
       return ndefWidgets;
     } else {
       return [Text('No NDEF data found')];
