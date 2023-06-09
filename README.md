@@ -328,5 +328,31 @@ You need to add the following to your `Info.plist` file of the main runner targe
 		<string>8FC1</string>
 		<string>FE00</string>
 	</array>
-    ```
-pour changer l'icone lancé " flutter pub run flutter_launcher_icons"
+```
+
+## Changer l'icone de l'app
+
+Ajouter a la suite des dependences dans le `pubspec.yaml`:
+
+```yaml=
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  image_path: "assets/images/open.png" 
+  android: true
+  ios: true
+```
+
+Décommenter l'ajout d'assets pour définir l'icone dans le `pubspec.yaml`:
+```yaml=
+# To add assets to your application, add an assets section, like this:
+assets:
+- assets/images/open.png
+```
+
+Puis lancer
+
+```shell=
+flutter pub get
+flutter pub run flutter_launcher_icons
+```
