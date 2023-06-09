@@ -329,3 +329,4 @@ You need to add the following to your `Info.plist` file of the main runner targe
 		<string>FE00</string>
 	</array>
     ```
+pour changer l'icone lancé " flutter pub run flutter_launcher_icons"
